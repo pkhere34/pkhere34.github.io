@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Values Table</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 10px;
+                background-color: #f2f2f2;
+            }
+            h1 {
+                color: #333366;
+            }
+            #copyDatesBtn {
+            background: linear-gradient(to bottom, #3498db, #2980b9);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        /* Hover effect */
+        #copyDatesBtn:hover {
+            background: linear-gradient(to bottom, #3db2e1, #2a8fb9);
+        }
+
+        /* Active/click effect */
+        #copyDatesBtn:active {
+            background: linear-gradient(to bottom, #2980b9, #3498db);
+        }
+            form {
+                background-color: #c7d4c4;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            label {
+                font-weight: bold;
+                margin-right: 5px;
+               
+            }
+            select, input[type="number"] {
+                margin-bottom: 20px;
+                padding: 10px;
+            }
+            input[type="submit"] {
+                background-color: #4CAF50;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                text-align: left;
+                padding: 8px;
+            }
+            th {
+                background-color: #4CAF50;
+                color: white;
+            }
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+            .scrollable-list {
+            max-height: 24px; /* Approximately 10 lines, assuming each line is ~24px high */
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+        </style>
+                    
+           <h1>Dates from the Database:</h1>
+           <ul id="dateList" class="scrollable-list">
+            {% for date in dates %}
+              {% if loop.last %}
+                <li>{{ date }}</li>
+              {% else %}
+                <li>{{ date }},</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+          <button id="copyDatesBtn">Copy to Clipboard</button>
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function() {
+    // Get the button and the ul element by their IDs
+    const copyDatesBtn = document.getElementById("copyDatesBtn");
+    const dateList = document.getElementById("dateList");
+    
+    // Add click event listener to the button
+    copyDatesBtn.addEventListener("click", function() {
+      // Initialize an empty array to hold dates
+      let dates = [];
+
+      // Iterate through each li item in the ul to get the date
+      for (let item of dateList.querySelectorAll('li')) {
+        dates.push(item.innerText);
+      }
+
+      // Check if dates are available
+      if (dates.length > 0) {
+        // Create a string of dates separated by commas and spaces
+        const datesStr = dates.join("");
+
+        // Create a temporary textarea element
+        const tempTextArea = document.createElement("textarea");
+        // Assign the dates string to the textarea value
+        tempTextArea.value = datesStr;
+
+        // Append the textarea to the document body
+        document.body.appendChild(tempTextArea);
+
+        // Select the text in the textarea
+        tempTextArea.select();
+
+        // Execute the copy command to copy the text to the clipboard
+        document.execCommand("copy");
+
+        // Remove the textarea from the document
+        document.body.removeChild(tempTextArea);
+
+        // Show an alert that the dates were copied
+        alert("Dates copied to clipboard");
+      } else {
+        // Show an alert if no dates are available
+        alert("No dates available to copy.");
+      }
+    });
+  });
+</script>
+
+    </head>
+ 
+
+<body>
+    <h1>Values Table -NIFTY 50 </h1>
+    <form method="post">
+        <label for="day">Day: </label>
+        <select name="day" id="day">
+            <option value="" {% if form_data['day'] == None %}selected{% endif %}>--Select Day--</option>
+            <option value="1" {% if form_data['day'] == '1' %}selected{% endif %}>Monday</option>
+            <option value="2" {% if form_data['day'] == '2' %}selected{% endif %}>Tuesday</option>
+            <option value="3" {% if form_data['day'] == '3' %}selected{% endif %}>Wednesday</option>
+            <option value="4" {% if form_data['day'] == '4' %}selected{% endif %}>Thursday</option>
+            <option value="5" {% if form_data['day'] == '5' %}selected{% endif %}>Friday</option>
+        </select>
+        
+        <label for="open_fib_status">Fib0382:OPEN </label>
+        <select name="open_fib_status" id="open_fib_status">
+            <option value="" {% if form_data['open_fib_status'] == None %}selected{% endif %}>--Select Status--</option>
+            <option value="BELOW" {% if form_data['open_fib_status'] == 'BELOW' %}selected{% endif %}>BELOW</option>
+            <option value="ABOVE" {% if form_data['open_fib_status'] == 'ABOVE' %}selected{% endif %}>ABOVE</option>
+            <option value="EQUAL" {% if form_data['open_fib_status'] == 'EQUAL' %}selected{% endif %}>EQUAL</option>
+        </select>
+
+        <label for="fib0618_status">Fib0618:OPEN </label>
+        <select name="fib0618_status" id="fib0618_status">
+            <option value="" {% if form_data['fib0618_status'] == None %}selected{% endif %}>--Select Status--</option>
+            <option value="BELOW" {% if form_data['fib0618_status'] == 'BELOW' %}selected{% endif %}>BELOW</option>
+            <option value="ABOVE" {% if form_data['fib0618_status'] == 'ABOVE' %}selected{% endif %}>ABOVE</option>
+            <option value="EQUAL" {% if form_data['fib0618_status'] == 'EQUAL' %}selected{% endif %}>EQUAL</option>
+        </select>
+
+        <label for="open_equals">iS Open: </label>
+        <select name="open_equals" id="open_equals">
+            <option value="" {% if form_data['open_equals'] == None %}selected{% endif %}>--Select--</option>
+            <option value="HIGH" {% if form_data['open_equals'] == 'HIGH' %}selected{% endif %}>Open = High</option>
+            <option value="LOW" {% if form_data['open_equals'] == 'LOW' %}selected{% endif %}>Open = Low</option>
+        </select>   
+
+        <label for="gap_start">Gap low(avg:-40,50):</label>
+        <input type="number" name="gap_start" id="gap_start" min="-300" max="300" value="{{ form_data['gap_start'] }}">
+        <label for="gap_end">:</label>
+        <input type="number" name="gap_end" id="gap_end" min="-300" max="300" value="{{ form_data['gap_end'] }}">
+        
+
+        <br><br><label for="avg_fii_buy_start" style="color: rgb(217, 11, 228);">1.Fii_AvgCash_BuyMin(avg:100,100):</label>
+        <input type="number" name="avg_fii_buy_start" id="avg_fii_buy_start" min="0" max="300" value="{{ form_data['avg_fii_buy_start'] }}">
+        <label for="avg_fii_buy_end">:</label>
+        <input type="number" name="avg_fii_buy_end" id="avg_fii_buy_end" min="0" max="300" value="{{ form_data['avg_fii_buy_end'] }}">
+
+
+
+        <label for="avg_fii_sell_start">1.Fii_AvgCash_sellMin(avg:100,100):</label>
+        <input type="number" name="avg_fii_sell_start" id="avg_fii_sell_start" min="0" max="300" value="{{ form_data['avg_fii_sell_start'] }}">
+        <label for="avg_fii_sell_end">:</label>
+        <input type="number" name="avg_fii_sell_end" id="avg_fii_sell_end" min="0" max="300" value="{{ form_data['avg_fii_sell_end'] }}">
+   
+
+        
+        <label for="nse_start">Fii_Net_Cash_Min(avg:-16,15):</label>
+        <input type="number" name="nse_start" id="nse_start" min="-300" max="300" value="{{ form_data['nse_start'] }}">
+        <label for="nse_end">:</label>
+        <input type="number" name="nse_end" id="nse_end" min="-300" max="300" value="{{ form_data['nse_end'] }}">
+
+        
+        <br><br><label for="fii_ilm_start" style="color: rgb(217, 11, 228);">2.Fii_fut_index__Buy_Min(avg:30,30):</label>
+        <input type="number" name="fii_ilm_start" id="fii_ilm_start" min="0" max="300" value="{{ form_data['fii_ilm_start'] }}">
+        <label for="fii_ilm_end">:</label>
+        <input type="number" name="fii_ilm_end" id="fii_ilm_end" min="0" max="300" value="{{ form_data['fii_ilm_end'] }}">
+
+        <label for="fii_ism_start">Fii_fut_index__Sell_Min(avg:35):</label>
+        <input type="number" name="fii_ism_start" id="fii_ism_start" min="0" max="300" value="{{ form_data['fii_ism_start'] }}">
+        <label for="fii_ism_end">:</label>
+        <input type="number" name="fii_ism_end" id="fii_ism_end" min="0" max="300" value="{{ form_data['fii_ism_end'] }}">
+
+        <label for="fii_index_longs_vs_shorts_percent_start">fii_index_longs_vs_shorts_percent_Min(avg:88):</label>
+        <input type="number" name="fii_index_longs_vs_shorts_percent_start" id="fii_index_longs_vs_shorts_percent_start" min="0" max="300" value="{{ form_data['fii_index_longs_vs_shorts_percent_start'] }}">
+        <label for="fii_index_longs_vs_shorts_percent_end">:</label>
+        <input type="number" name="fii_index_longs_vs_shorts_percent_end" id="fii_index_longs_vs_shorts_percent_end" min="0" max="300" value="{{ form_data['fii_index_longs_vs_shorts_percent_end'] }}">
+
+        <br><br><label for="fii_sl_start" style="color: rgb(217, 11, 228);">3.Fii_fut_stocks_Buy_Min(avg:55):</label>
+        <input type="number" name="fii_sl_start" id="fii_sl_start" min="0" max="300" value="{{ form_data['fii_sl_start'] }}">
+        <label for="fii_sl_end">:</label>
+        <input type="number" name="fii_sl_end" id="fii_sl_end" min="0" max="300" value="{{ form_data['fii_sl_end'] }}">
+
+
+
+        <label for="fii_ss_start">Fii_fut_stocks_sell_Min(avg:55):</label>
+        <input type="number" name="fii_ss_start" id="fii_ss_start" min="0" max="300" value="{{ form_data['fii_ss_start'] }}">
+        <label for="fii_ss_end">:</label>
+        <input type="number" name="fii_ss_end" id="fii_ss_end" min="0" max="300" value="{{ form_data['fii_ss_end'] }}">
+
+        <label for="fii_stock_longs_vs_shorts_percent_start">Fii_fut_stocks_L/S_LOW (avg:96):</label>
+        <input type="number" name="fii_stock_longs_vs_shorts_percent_start" id="fii_stock_longs_vs_shorts_percent_start" min="0" max="300" value="{{ form_data['fii_stock_longs_vs_shorts_percent_start'] }}">
+        <label for="fii_stock_longs_vs_shorts_percent_end">:</label>
+        <input type="number" name="fii_stock_longs_vs_shorts_percent_end" id="fii_stock_longs_vs_shorts_percent_end" min="0" max="300" value="{{ form_data['fii_stock_longs_vs_shorts_percent_end'] }}">
+
+
+        <br><br><label for="client_ilm_start" style="color: rgb(217, 11, 228);">4.client_fut_index__Buy_Min(avg:127):</label>
+        <input type="number" name="client_ilm_start" id="client_ilm_start" min="0" max="300" value="{{ form_data['client_ilm_start'] }}">
+        <label for="client_ilm_end">:</label>
+        <input type="number" name="client_ilm_end" id="client_ilm_end" min="0" max="300" value="{{ form_data['client_ilm_end'] }}">
+
+
+        <label for="client_ism_start">client_fut_index__sell_Min(avg:122):</label>
+        <input type="number" name="client_ism_start" id="client_ism_start" min="0" max="300" value="{{ form_data['client_ism_start'] }}">
+        <label for="client_ism_end">:</label>
+        <input type="number" name="client_ism_end" id="client_ism_end" min="0" max="300" value="{{ form_data['client_ism_end'] }}">
+
+
+        <label for="client_index_longs_vs_shorts_percent_start">client_fut_index_L/S_RATIO_Min(avg:104):</label>
+        <input type="number" name="client_index_longs_vs_shorts_percent_start" id="client_index_longs_vs_shorts_percent_start" min="0" max="300" value="{{ form_data['client_index_longs_vs_shorts_percent_start'] }}">
+        <label for="client_index_longs_vs_shorts_percent_end">:</label>
+        <input type="number" name="client_index_longs_vs_shorts_percent_end" id="client_index_longs_vs_shorts_percent_end" min="0" max="300" value="{{ form_data['client_index_longs_vs_shorts_percent_end'] }}">
+
+
+        <br><br><label for="client_sl_start" style="color: rgb(217, 11, 228);">5.client_fut_stocks_Buy_Min(avg:79):</label>
+        <input type="number" name="client_sl_start" id="client_sl_start" min="0" max="300" value="{{ form_data['client_sl_start'] }}">
+        <label for="client_sl_end">:</label>
+        <input type="number" name="client_sl_end" id="client_sl_end" min="0" max="300" value="{{ form_data['client_sl_end'] }}">
+
+
+        <label for="client_ss_start">client_fut_stocks_sell_Min(avg:78):</label>
+        <input type="number" name="client_ss_start" id="client_ss_start" min="0" max="300" value="{{ form_data['client_ss_start'] }}">
+        <label for="client_ss_end">:</label>
+        <input type="number" name="client_ss_end" id="client_ss_end" min="0" max="300" value="{{ form_data['client_ss_end'] }}">
+
+
+        <label for="client_stock_longs_vs_shorts_percent_start">client_fut_stocks_RATIO_Min(avg:102):</label>
+        <input type="number" name="client_stock_longs_vs_shorts_percent_start" id="client_stock_longs_vs_shorts_percent_start" min="0" max="300" value="{{ form_data['client_stock_longs_vs_shorts_percent_start'] }}">
+        <label for="client_stock_longs_vs_shorts_percent_end">:</label>
+        <input type="number" name="client_stock_longs_vs_shorts_percent_end" id="client_stock_longs_vs_shorts_percent_end" min="0" max="300" value="{{ form_data['client_stock_longs_vs_shorts_percent_end'] }}">
+
+
+
+        <br><br><label for="pro_ilm_start" style="color: rgb(217, 11, 228);">6.pro_fut_index__Buy_Min(avg:77):</label>
+        <input type="number" name="pro_ilm_start" id="pro_ilm_start" min="0" max="300" value="{{ form_data['pro_ilm_start'] }}">
+        <label for="pro_ilm_end">:</label>
+        <input type="number" name="pro_ilm_end" id="pro_ilm_end" min="0" max="300" value="{{ form_data['pro_ilm_end'] }}">
+
+        <label for="pro_ism_start">pro_fut_index__sell_Min(avg:77):</label>
+        <input type="number" name="pro_ism_start" id="pro_ism_start" min="0" max="300" value="{{ form_data['pro_ism_start'] }}">
+        <label for="pro_ism_end">:</label>
+        <input type="number" name="pro_ism_end" id="pro_ism_end" min="0" max="300" value="{{ form_data['pro_ism_end'] }}">
+
+
+        <label for="pro_index_longs_vs_shorts_percent_start">pro_fut_index__L/R (avg:100):</label>
+        <input type="number" name="pro_index_longs_vs_shorts_percent_start" id="pro_index_longs_vs_shorts_percent_start" min="0" max="300" value="{{ form_data['pro_index_longs_vs_shorts_percent_start'] }}">
+        <label for="pro_index_longs_vs_shorts_percent_end">:</label>
+        <input type="number" name="pro_index_longs_vs_shorts_percent_end" id="pro_index_longs_vs_shorts_percent_end" min="0" max="300" value="{{ form_data['pro_index_longs_vs_shorts_percent_end'] }}">
+
+        <br><br><label for="pro_sl_start" style="color: rgb(217, 11, 228);">7.pro_fut_stocks__Buy_Min(avg:86):</label>
+        <input type="number" name="pro_sl_start" id="pro_sl_start" min="0" max="300" value="{{ form_data['pro_sl_start'] }}">
+        <label for="pro_sl_end">:</label>
+        <input type="number" name="pro_sl_end" id="pro_sl_end" min="0" max="300" value="{{ form_data['pro_sl_end'] }}">
+
+        <label for="pro_ss_start">pro_fut_stocks__sell_Min(avg:86):</label>
+        <input type="number" name="pro_ss_start" id="pro_ss_start" min="0" max="300" value="{{ form_data['pro_ss_start'] }}">
+        <label for="pro_ss_end">:</label>
+        <input type="number" name="pro_ss_end" id="pro_ss_end" min="0" max="300" value="{{ form_data['pro_ss_end'] }}">
+
+        <label for="pro_stock_longs_vs_shorts_percent_start">pro_fut_stocks__L/S(avg:100):</label>
+        <input type="number" name="pro_stock_longs_vs_shorts_percent_start" id="pro_stock_longs_vs_shorts_percent_start" min="0" max="300" value="{{ form_data['pro_stock_longs_vs_shorts_percent_start'] }}">
+        <label for="pro_stock_longs_vs_shorts_percent_end">:</label>
+        <input type="number" name="pro_stock_longs_vs_shorts_percent_end" id="pro_stock_longs_vs_shorts_percent_end" min="0" max="300" value="{{ form_data['pro_stock_longs_vs_shorts_percent_end'] }}">
+        
+        <br><br><label for="dates_pk">Enter multiple dates (YYYY-MM-DD) separated by commas:</label>
+        <input type="text" id="dates_pk" name="dates_pk" value="{{ form_data.dates_pk }}" placeholder="YYYY-MM-DD">
+
+        <input type="submit" value="Filter">
+        <form id="valuesForm" method="post">
+              <input type="submit" name="reset" value="Reset">
+        </form>
+       
+
+
+        
+
+    </form>
+    <p>Total number of records: {{ data|length }}</p>
+
+    <table border="1">
+        <tr>
+            <th>Date</th>
+            <th>Open</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Close</th>
+            <th>High_Low</th>
+            <th>Gap_Up_or_Down</th>
+            <th>High_Open</th>
+            <th>Low_Open</th>
+            <th>Day</th>
+            <th>Fib0382</th>
+            <th>Fib0618</th>
+            <th>Last7d</th>
+            <th>Last15d</th>
+            <th>Last30d</th>
+            <th>open_fib0382_status</th>
+            <th>open_fib0618_status</th>
+            <th>Fib0382ToHigh</th>
+            <th>Fib0382ToLow</th>
+            <th>Fib0618ToHigh</th>
+            <th>Fib0618ToLow</th>
+            <th>moon</th>
+            <th>high_vix</th>
+            <th>Fii_avg_cash_buy(100)</th>
+            <th>Fii_avg_cash_sell(100)</th>
+            <th>Nse_cash_net:avg(+ve:15,-ve:-16)</th>
+            <th>fii_fut_index_buy(avg:30)</th>
+            <th>fii_fut_index_sell(avg:35)</th>
+            <th>index:Longs vs Shorts ratio (avg:88)</th>
+            <th>fii_stocks_longs(avg:55)</th>
+            <th>fii_stocks_shorts(avg:55)</th>
+            <th>stocks:Longs vs Shorts ratio (avg:96)</th>
+            <th>Cient:index_fut_buy (avg:127)</th>
+            <th>Cient:index_fut_sell (avg:122)</th>
+            <th>Cient:index_fut_L/S RATIO (avg:103)</th>
+            <th>Cient:stocks_buy (avg:79)</th>
+            <th>Cient:stocks_sell (avg:78)</th>
+            <th>Cient:stocks_L/R RATIO (avg:102)</th>
+            <th>Pro:index_buy(avg:77)</th>
+            <th>Pro:index_sell(avg:77)</th>
+            <th>Pro:index_L/R (avg:100)</th>
+            <th>Pro:stocks_buy (avg:86)</th>
+            <th>Pro:stocks_sell (avg:86)</th>
+            <th>Pro:stocks_L/S RATIO (avg:100)</th>
+            <th>1st_15mCandle_broke_high</th>
+            <th>1st_15mCandle_broke_low</th>
+            <th>next_trading_date</th>
+        </tr>
+
+        {% for row in data %}
+        <tr>
+            {% for item in row %}
+                {% if loop.index == 1 %}
+                    <td><a href="http://localhost:5000/{{ item.strftime('%d-%m-%Y') }}.png" target="_blank">{{ item }}</a></td>
+                {% else %}
+                    <td>{{ item }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    {% endfor %}
+         <tr>
+            <td>Average</td> <!-- Empty cell for 'Date' -->
+            <td></td> <!-- Empty cell for 'Open' -->
+            <td></td> <!-- Empty cell for 'High' -->
+            <td></td> <!-- Empty cell for 'Low' -->
+            <td></td> <!-- Empty cell for 'Close' -->
+            <td>{{ average_high_low }}</td>
+            <td>{{ average_gap_up_or_down }}</td>
+            <td>+{{average_high_open}}</td>
+            <td>-{{average_low_open}}</td>
+            <td>{{strength_values}}%</td>
+            <!-- You can continue with empty cells for the remaining columns, if needed -->
+        </tr>
+    </table>
+
+</body>
+</html>
